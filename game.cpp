@@ -18,7 +18,9 @@ void initScreen(){
     consoleHeight=csbi.srWindow.Bottom-csbi.srWindow.Top+1;
 
 }
-
+void setColor(int color){
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),color);
+}
 
 struct Point{
     int XCoord;
@@ -52,7 +54,7 @@ class Snake{
         }else  if(direction==DIR_DOWN && newDirection!=DIR_UP){
             direction= newDirection;
          }else   if(direction==DIR_RIGHT && newDirection!=DIR_LEFT){
-            direction= newDirection;
+          direction= newDirection;
          } else if(direction==DIR_LEFT && newDirection!=DIR_RIGHT){
             direction= newDirection;
          }
@@ -130,7 +132,7 @@ food=Point(x,y);
 
 void displayscore(){
     gotoxy(consoleWidth/2,0);
-    cout<<"SCORE: "<<score;
+    cout<<"YOUR SCORE: "<<score;
 }
 
 void gotoxy(int x,int y){
@@ -139,16 +141,36 @@ coord.X=x;
 coord.Y=y;
 SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),coord);
 }
+void drawBorader(){
+    setColor(5);
+    for(int i=0;i<consoleWidth;i++){
+        gotoxy(i,1);
+        cout<<"#";
+        gotoxy(i,consoleHeight-1);
+        cout<<"#";
+    }
 
+    for(int i=1;i<consoleHeight;i++){
+        gotoxy(0,i);
+        cout<<"#";
+        gotoxy(consoleWidth-1,i);
+        cout<<"#";
+    }
+}
 
 void draw(){
     system("cls");
+    drawBorader();
     for(int i=0;i<snake->getLength();i++){
+        
         gotoxy(snake->body[i].XCoord,snake->body[i].YCoord);
+        setColor(2);
         cout<<SNAKE_BODY;
     }
     gotoxy(food.XCoord,food.YCoord);
+    setColor(4);
     cout<<FOOD;
+    setColor(1);
     displayscore();
 }
 
